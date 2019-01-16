@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 //#include <mc0.h>
 
 int main() {
@@ -16,6 +17,12 @@ int main() {
 		printf("\nwhat\n");
 	}
 	//printf("%s", name);
+	
+	clock_t timey = clock();
+	double time_taken = ((double)timey)/CLOCKS_PER_SEC; // in seconds 
+	printf("%f seconds\n",time_taken);
+
+	//system calls
 	
 
 	return(0);
