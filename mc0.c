@@ -18,7 +18,6 @@ int main() {
 	
 	clock_t timey = clock();
 	double time =((double)timey)/CLOCKS_PER_SEC;
-	printf("%f seconds", time);
 	
 	if (fork() ==0) {
 		printf("i am child\n");
@@ -27,6 +26,15 @@ int main() {
 	}
 	else {
 		wait();
+		
+		clock_t timey1= clock();
+		double time1 =((double)timey1)/CLOCKS_PER_SEC*1000;
+		double elapsed = time1-time;		
+		printf("\n\n");
+		printf("== Statistics ===\n");
+		printf("Elapsed time: %f milliseconds\n ", elapsed);
+
+		
 		printf("i am parent\n");
 		printf("child should be done\n");
 	}
