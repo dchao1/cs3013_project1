@@ -14,15 +14,27 @@ int main() {
 	char* comm = (char*) malloc(sizeof(char*));
 	printf("Option?: ");
 	scanf("%c", comm);
-	printf(comm);
 	
 	clock_t timey = clock();
 	double time =((double)timey)/CLOCKS_PER_SEC;
 	
 	if (fork() ==0) {
-		printf("i am child\n");
-		execl("/bin/sh", "/bin/sh", "-c", "whoami", 0);
-		printf("done being child\n");
+		if (0 == strcmp(comm, "0")) {
+			printf("\n\n");
+			printf("-- Who Am I? --\n");
+			execl("/bin/sh", "/bin/sh", "-c", "whoami", 0);
+		}
+		if (0 == strcmp(comm, "1")) {
+			printf("\n\n");
+			printf("-- Last Logins --\n");
+			printf("doesn't do shit yet\n");
+		}
+		if (0 == strcmp(comm, "2")) {
+			printf("\n\n");
+			printf("-- Directory Listing --\n");
+			printf("doesn't do shit yet\n");
+		}
+
 	}
 	else {
 		wait();
