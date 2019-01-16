@@ -1,6 +1,8 @@
+#include <unistd.h>
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <sys/resource.h>
 //#include <mc0.h>
 
 int main() {
@@ -19,6 +21,8 @@ int main() {
 	clock_t timey = clock();
 	double time =((double)timey)/CLOCKS_PER_SEC;
 	printf("%f seconds", time);
+
+	struct rusage usage;
 	
 	if (fork() ==0) {
 		printf("i am child\n");
@@ -29,6 +33,11 @@ int main() {
 		wait();
 		printf("i am parent\n");
 		printf("child should be done\n");
+		getrusage(RUSAGE_SELF, &usage);
+		long pageFaults = usage.ru_majflt;
+		long pageReclaims = usage.ru_minflt;
+		printf("%ld page faults\n", pageFaults);
+		printf("%ld page reclaims\n", pageReclaims);
 	}
 
 	return(0);
