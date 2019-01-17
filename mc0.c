@@ -6,6 +6,19 @@
 //#include <mc0.h>
 
 int main() {
+	
+	//
+	while (1) {
+		midDayComm();
+	}
+	//exit
+	return(0);
+
+
+}
+
+int midDayComm() {
+	
 	// Introduce our program
 	printf("===== Mid-Day Commander, v0 =====\n");
 	printf("G'day, Commander! What command would you like to run?\n");
@@ -35,13 +48,13 @@ int main() {
 		if (0 == strcmp(comm, "1")) {
 			printf("\n\n");
 			printf("-- Last Logins --\n");
-			printf("doesn't do shit yet\n");
+			execl("/bin/sh", "/bin/sh", "-c", "last", 0);
 		}
 		//2 is for ls
 		if (0 == strcmp(comm, "2")) {
 			printf("\n\n");
 			printf("-- Directory Listing --\n");
-			printf("doesn't do shit yet\n");
+			execl("/bin/sh", "/bin/sh", "-c", "ls", 0);
 		}
 
 	}
@@ -62,9 +75,8 @@ int main() {
                 long pageReclaims = usage.ru_minflt;
                 printf("%ld page faults\n", pageFaults);
                 printf("%ld page reclaims\n", pageReclaims);
+				printf("\n");
 
-	}
-	//exit
-	return(0);
+	} 
 }
 
