@@ -8,9 +8,10 @@
 int main() {
 	
 	//
-	while (1) {
-		midDayComm();
-	}
+	//while (1) {
+	//	midDayComm();
+	//}
+	midDayComm();
 	//exit
 	return(0);
 
@@ -27,17 +28,20 @@ int midDayComm() {
 	printf("   2. ls      : Prints out the result of a listing on a user-specified path\n");
 	
 	//we create a character to hold what the user gives us
-	char* comm = (char*)malloc(sizeof(char*));
+	//char* comm = (char*)malloc(sizeof(char*));
 	printf("Option?: ");
-	scanf("%c", comm); //actually ask the user for the code
-	
+	//scanf("%c", comm); //actually ask the user for the code
+	char* comm[1];
+	fgets(comm,1,stdin);
+	printf("this is comm value : %s\n", comm);	
+
 	//start the timer
 	clock_t timey = clock();
 	double time =((double)timey)/CLOCKS_PER_SEC;
 
 	struct rusage usage;
 	//now if we are the child, we go through the options
-	if (fork() ==0) {
+	if (fork() == 0) {
 		//0 is for whoami
 		if (0 == strcmp(comm, "0")) {
 			printf("\n\n");
