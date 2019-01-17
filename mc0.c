@@ -1,8 +1,12 @@
+#include <string.h>
 #include <unistd.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/time.h>
 #include <sys/resource.h>
 //#include <mc0.h>
 
@@ -41,7 +45,7 @@ int midDayComm() {
 	clock_t timey = clock();
 	double time =((double)timey)/CLOCKS_PER_SEC;
 
-	struct rusage usage;
+	//struct rusage usage;
 	
 	//fork it
 	int childId = fork();
@@ -64,7 +68,29 @@ int midDayComm() {
 		else if (0 == strcmp(comm, "2")) {
 			printf("\n\n");
 			printf("-- Directory Listing --\n");
-			execl("/bin/sh", "/bin/sh", "-c", "ls", 0);
+			// starting to write a list of commands as a string
+			char* command = (char*)malloc(128*sizeof(char*));
+			strcpy(command, "ls");
+			strcat(command, " ");
+
+			// ask for the Arguments input and put it into a list of commands
+			char* args = (char*)malloc(128*sizeof(char*));
+			printf("Arguments?: ");
+			fgets(args, 128, stdin);
+			args = strtok(args, "\n");
+			strcat(command, args);
+			strcat(command, " ");
+
+			// ask for the Path input and put it into a list of commands
+			char* path = (char*)malloc(128*sizeof(char*));
+			printf("Path?: ");
+			fgets(path, 128, stdin);
+			path = strtok(path, "\n");
+			strcat(command, path);
+			strcat(command, "\n");
+
+			// execute the command
+			execl("/bin/sh", "/bin/sh", "-c", command, 0);
 		}
 		else {
 			printf ("this is the default\n");
@@ -75,7 +101,7 @@ int midDayComm() {
 	//otherwise, parent thread active
 	else {
 		//give the kid some time
-		wait();
+		wait(NULL);
 		//once the kid's done see how long he took
 		clock_t timey1= clock();
 		double time1 =((double)timey1)/CLOCKS_PER_SEC*1000;
@@ -86,11 +112,14 @@ int midDayComm() {
 		printf("== Statistics ===\n");
 		printf("Elapsed time: %f milliseconds\n ", elapsed);
 		//rusage gets page faults/reclaims
+		
+		struct rusage usage;
 		getrusage(RUSAGE_SELF, &usage);
-        long pageFaults = usage.ru_majflt;
-        long pageReclaims = usage.ru_minflt;
-        printf("%ld page faults\n", pageFaults);
-        printf("%ld page reclaims\n", pageReclaims);
+        	long pageFaults = usage.ru_majflt;
+        	long pageReclaims = usage.ru_minflt;
+        	printf("%ld page faults\n", pageFaults);
+        	printf("%ld page reclaims\n", pageReclaims);
+		
 		printf("\n");
 		return 1;
 
