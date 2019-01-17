@@ -3,7 +3,7 @@ obj = $(src:.c=.o)
 
 LDFLAGS = -lz -lm
 
-mc0: $(obj)
+mc1: $(obj)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 .PHONY: clean
