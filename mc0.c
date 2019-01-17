@@ -4,15 +4,21 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <sys/resource.h>
-//#include <mc0.h>
+#include "mc0.h"
+
+int midDayComm();
+
+
 
 int main() {
 	
-	
+	//keep running until user forcefully exits
 	while (1) {
 		midDayComm();
 	}
 
+	
+	//exit
 	return(0);
 
 
@@ -28,6 +34,7 @@ int midDayComm() {
 	printf("   2. ls      : Prints out the result of a listing on a user-specified path\n");
 	
 	//we create a character to hold what the user gives us
+
 	char* comm = (char*)malloc(128*sizeof(char*));
 	printf("Option?: ");
 	fgets(comm, 128, stdin);
@@ -51,19 +58,19 @@ int midDayComm() {
 		if (0 == strcmp(comm, "0")) {
 			printf("\n\n");
 			printf("-- Who Am I? --\n");
-			execl("/bin/sh", "/bin/sh", "-c", "whoami", 0);
+			execl("/bin/sh", "/bin/sh", "-c", "whoami", (char *)0);
 		}
 		//1 is for last
 		else if (0 == strcmp(comm, "1")) {
 			printf("\n\n");
 			printf("-- Last Logins --\n");
-			execl("/bin/sh", "/bin/sh", "-c", "last", 0);
+			execl("/bin/sh", "/bin/sh", "-c", "last", (char *)0);
 		}
 		//2 is for ls
 		else if (0 == strcmp(comm, "2")) {
 			printf("\n\n");
 			printf("-- Directory Listing --\n");
-			execl("/bin/sh", "/bin/sh", "-c", "ls", 0);
+			execl("/bin/sh", "/bin/sh", "-c", "ls", (char *)0);
 		}
 		else {
 			printf ("this is the default\n");
@@ -74,7 +81,7 @@ int midDayComm() {
 	//otherwise, parent thread active
 	else {
 		//give the kid some time
-		wait();
+		wait(NULL);
 		//once the kid's done see how long he took
 		clock_t timey1= clock();
 		double time1 =((double)timey1)/CLOCKS_PER_SEC*1000;
