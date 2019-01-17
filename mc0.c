@@ -8,13 +8,19 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <sys/resource.h>
-//#include <mc0.h>
+#include "mc0.h"
+
+int midDayComm();
+
+
 
 int main() {
 	
+	//keep running until user forcefully exits
 	while (1) {
 		midDayComm();
 	}
+
 	
 	//exit
 	return(0);
@@ -44,8 +50,6 @@ int midDayComm() {
 	//start the timer
 	clock_t timey = clock();
 	double time =((double)timey)/CLOCKS_PER_SEC;
-
-	//struct rusage usage;
 	
 	//fork it
 	int childId = fork();
@@ -56,18 +60,19 @@ int midDayComm() {
 		if (0 == strcmp(comm, "0")) {
 			printf("\n\n");
 			printf("-- Who Am I? --\n");
-			execl("/bin/sh", "/bin/sh", "-c", "whoami", 0);
+			execl("/bin/sh", "/bin/sh", "-c", "whoami", (char *)0);
 		}
 		//1 is for last
 		else if (0 == strcmp(comm, "1")) {
 			printf("\n\n");
 			printf("-- Last Logins --\n");
-			execl("/bin/sh", "/bin/sh", "-c", "last", 0);
+			execl("/bin/sh", "/bin/sh", "-c", "last", (char *)0);
 		}
 		//2 is for ls
 		else if (0 == strcmp(comm, "2")) {
 			printf("\n\n");
 			printf("-- Directory Listing --\n");
+
 			// starting to write a list of commands as a string
 			char* command = (char*)malloc(128*sizeof(char*));
 			strcpy(command, "ls");
@@ -90,7 +95,7 @@ int midDayComm() {
 			strcat(command, "\n");
 
 			// execute the command
-			execl("/bin/sh", "/bin/sh", "-c", command, 0);
+			execl("/bin/sh", "/bin/sh", "-c", command, (char *)0);
 		}
 		else {
 			printf ("this is the default\n");

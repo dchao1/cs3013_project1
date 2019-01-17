@@ -1,6 +1,10 @@
-/*
-example include file
-*/
+#ifndef MC0_H
+#define MC0_H
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
-//void myPrintHelloMake(void);
+int midDaycomm();
+int main();
 
+#endif
