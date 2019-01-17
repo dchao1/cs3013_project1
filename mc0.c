@@ -12,12 +12,7 @@ int main() {
 	while (1) {
 		midDayComm();
 	}
-	
-	//int rtew = midDayComm();
-	//if (rtew == 1){
-		//midDayComm();
-	//}
-	//exit
+
 	return(0);
 
 
