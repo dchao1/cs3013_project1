@@ -8,5 +8,5 @@ mc1: $(obj)
 
 .PHONY: clean
 clean:
-	rm -f $(obj) mc0
+	rm -f $(obj) mc1
 
