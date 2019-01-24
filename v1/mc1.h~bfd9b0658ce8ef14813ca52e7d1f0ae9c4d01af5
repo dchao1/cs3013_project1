@@ -1,5 +1,5 @@
-#ifndef MC0_H
-#define MC0_H
+#ifndef MC1_H
+#define MC1_H
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
