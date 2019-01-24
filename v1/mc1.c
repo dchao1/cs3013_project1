@@ -24,13 +24,18 @@ int main() {
 
 
 	struct newCommands *newCs = malloc(1*sizeof(struct newCommands));
+	//below is test code for custom commands
+	/*
+	strcpy( (*newCs).input[0],  "ls" );
+	strcpy( (*newCs).input[1], "pwd" );
+	(*newCs).numElements = 2;
+	*/
 
 	
 	//======
 	//activate our commander
 	//keep running until user forcefully exits
 	while (1) {
-		printf("entering while loop\n");
 		midDayComm(newCs);
 		//midDayComm(newCommands);
 	}
@@ -45,20 +50,14 @@ int main() {
 //int midDayComm(char* newCommands) {
 int midDayComm(struct newCommands* newCs) {	
 	
+	
 	//endptr is a thing needed to make strtoi work in the accessing the array of comm
 	char* endptr;
 	
 	
-	strcpy( (*newCs).input[0],  "ls" );
-	strcpy( (*newCs).input[1], "pwd" );
-	(*newCs).numElements = 2;
-	printf("%s, %s", (*newCs).input[0], (*newCs).input[1]);
 
 	int numElements = (*newCs).numElements;
 	
-
-
-
 
 	// Introduce our program
 	printf("===== Mid-Day Commander, v0 =====\n");
@@ -85,6 +84,8 @@ int midDayComm(struct newCommands* newCs) {
 	fgets(comm, 128, stdin);
 	comm = strtok(comm, "\n");
 	
+	
+	
 	//c is for change directory
 	if (0 == strcmp(comm, "c")) {
 		char* dir = (char*)malloc(128*sizeof(char*));
@@ -96,6 +97,37 @@ int midDayComm(struct newCommands* newCs) {
 		chdir(dir);
 		printf("\n\n");
 	}
+	//a for add command
+	else if (0 == strcmp(comm, "a")) {
+		printf("\n");
+		printf("-- Add a command --\n");
+		
+		// ask for the command input and put it into the array of stored
+		char* args = (char*)malloc(128*sizeof(char*));
+		printf("Command to add?: ");
+		fgets(args, 128, stdin);
+		int len;
+		// remove newline
+		len = strlen(args);
+		if( args[len-1] == '\n' ) {
+			args[len-1] = 0;
+		}
+		
+		//store as input[numElements] because if there are x elements, numElements will be x+1
+		//for example, if there are elements 0, 1, we will store as 2
+		strcpy( (*newCs).input[numElements],  args);
+		
+		//increment the count
+		(*newCs).numElements = (*newCs).numElements+1;
+		//update the local count as well
+		int numElements = (*newCs).numElements;
+	
+		printf("Okay, added with ID %d!\n\n", numElements+2);
+			
+	}
+	//else, if it is none of the original commands, cycle through our array to see if we have a match
+	//might need to check for error above
+	
 	//p is for current working directory
 	else if (0 == strcmp(comm, "p")) {
 		printf("\n\n");
@@ -111,6 +143,8 @@ int midDayComm(struct newCommands* newCs) {
 		printf("Logging you out, Commander.\n");
 		exit(EXIT_SUCCESS);
 	}
+	//
+	//in this else, we run the child and parent threads
 	else {
 		//start the timer
 		clock_t timey = clock();
@@ -162,25 +196,6 @@ int midDayComm(struct newCommands* newCs) {
 				// execute the command
 				execl("/bin/sh", "/bin/sh", "-c", command, (char *)0);
 			}
-			//a for add command
-			else if (0 == strcmp(comm, "a")) {
-				printf("\n\n");
-				printf("-- Add a command --\n");
-			
-				// ask for the command input and put it into a 
-				/*
-				char* args = (char*)malloc(128*sizeof(char*));
-				printf("Arguments?: ");
-				fgets(args, 128, stdin);
-				args = strtok(args, "\n");
-				strcat(command, args);
-				strcat(command, " ");*/
-			
-			
-			}
-			//else, if it is none of the original commands, cycle through our array to see if we have a match
-
-			//might need to check for error above
 			//we have the entered value, presumably one of our new commands
 			else if (strtoimax(comm, &endptr, 0) > 2) {
 				//get the inputVal
